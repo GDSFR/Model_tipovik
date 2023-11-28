@@ -59,34 +59,43 @@ def simp_max(hills):
             return Fmax
     return hills[0]
 
+
+def hills_calc(x, y, a):
+    res = [[], [], []]
+    return [[round(x - a / 2, 4), round(y - 0.29 * a, 4)], [round(x + a / 2, 4), round(y - 0.29 * a, 4)],
+            [round(x, 4), round(y + 0.58 * a, 4)]]
+
+
 def simplex_method(start, a, e, axes):
     x_cur = start[0]
     y_cur = start[1]
-    way = [[x_cur, y_cur]]
+    way = [[x_cur, y_cur, input_F(x_cur, y_cur)]]
     global F_step
     c = 25
 
-    hills = [[x_cur - a / 2, y_cur - 0.29 * a], [x_cur + a / 2, y_cur - 0.29 * a], [x_cur, y_cur + 0.58 * a]]
+    hills = hills_calc(x_cur, y_cur, a)
     for i in range(len(hills)):
         way.append(hills[i])
     while a > e:
         print(hills)
         Fmax = simp_max(hills)
         last_hills = [[]]
-        #new_hill = [hills[0][0] + hills[1][0] - hills[2][0], hills[0][1] + hills[1][1] - hills[2][1]]
+        # new_hill = [hills[0][0] + hills[1][0] - hills[2][0], hills[0][1] + hills[1][1] - hills[2][1]]
         for i in range(len(hills)):
             if hills[i] == Fmax:
                 last_hills = hills.copy()
                 hills.remove(hills[i])
-                hills.append([hills[0][0] + hills[1][0] - Fmax[0], hills[0][1] + hills[1][1] - Fmax[1]])
+                hills.append(
+                    [round(hills[0][0] + hills[1][0] - Fmax[0], 4), round(hills[0][1] + hills[1][1] - Fmax[1], 1)])
                 way.append(hills[-1])
+                way[-1].append(round(input_F(way[-1][0], way[-1][1]), 4))
                 x_cur = hills[-1][0]
                 y_cur = hills[-1][1]
         if (last_hills[0] == hills[0]) & (last_hills[1] == hills[1]):
             a /= 2
-            hills = [[x_cur - a / 2, y_cur - 0.29 * a], [x_cur + a / 2, y_cur - 0.29 * a], [x_cur, y_cur + 0.58 * a]]
-        c-=1
-
+            hills = hills_calc(x_cur, y_cur, a)
+        c -= 1
+    print(way)
     to_plot(way, 'y', axes, -15, 16)
 
 
@@ -103,7 +112,7 @@ def Hooke_Jeeves(start, step_x, step_y, e, axes):
         y_cur -= step_y
         F_step = input_F(x_cur, y_cur)
         if F_min > F_step:
-            way.append([x_cur, y_cur])
+            way.append([x_cur, y_cur, input_F(x_cur, y_cur)])
             F_min = F_step
             continue
         else:
@@ -114,7 +123,7 @@ def Hooke_Jeeves(start, step_x, step_y, e, axes):
         y_cur += step_y
         F_step = input_F(x_cur, y_cur)
         if F_min > F_step:
-            way.append([x_cur, y_cur])
+            way.append([x_cur, y_cur, input_F(x_cur, y_cur)])
             F_min = F_step
             continue
         else:
@@ -125,7 +134,7 @@ def Hooke_Jeeves(start, step_x, step_y, e, axes):
         y_cur -= step_y
         F_step = input_F(x_cur, y_cur)
         if F_min > F_step:
-            way.append([x_cur, y_cur])
+            way.append([x_cur, y_cur, input_F(x_cur, y_cur)])
             F_min = F_step
             continue
         else:
@@ -136,7 +145,7 @@ def Hooke_Jeeves(start, step_x, step_y, e, axes):
         y_cur += step_y
         F_step = input_F(x_cur, y_cur)
         if F_min > F_step:
-            way.append([x_cur, y_cur])
+            way.append([x_cur, y_cur, input_F(x_cur, y_cur)])
             F_min = F_step
             continue
         else:
@@ -145,6 +154,7 @@ def Hooke_Jeeves(start, step_x, step_y, e, axes):
 
         step_x /= 2
         step_y /= 2
+    print(way)
     to_plot(way, 'r', axes, -15, 18)
 
 
@@ -214,7 +224,7 @@ if __name__ == "__main__":
 
     draw_axes(axes)
     draw_func()
-    Gauss_Zeudel(start, step_x, step_y, e, axes)
-    #Hooke_Jeeves(start, step_x, step_y, e, axes)
-    #simplex_method(start, a, e, axes)
+    # Gauss_Zeudel(start, step_x, step_y, e, axes)
+    # Hooke_Jeeves(start, step_x, step_y, e, axes)
+    simplex_method(start, a, e, axes)
     plt.show()
