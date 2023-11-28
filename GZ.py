@@ -49,30 +49,45 @@ def to_plot(way, color, axes, x_pos, y_pos):
         # plt.plot(line)
 
 
-def simp_min(hills):
-    Fmin = input_F(hills[0][1], hills[0][2])
+def simp_max(hills):
+    Fmax_val = input_F(hills[0][0], hills[0][1])
     global Fstep
     for i in hills:
         Fstep = input_F(i[0], i[1])
-        if Fstep < Fmin:
-            Fmin = Fstep
-    return Fmin
+        if Fstep > Fmax_val:
+            Fmax = i
+            return Fmax
+    return hills[0]
 
 def simplex_method(start, a, e, axes):
     x_cur = start[0]
     y_cur = start[1]
     way = [[x_cur, y_cur]]
-    global F_min
     global F_step
-    F_min = input_F(x_cur, y_cur)
-    hills = [[x_cur - a / 2, y_cur - 0.29 * a], [x_cur + a / 2, y_cur - 0.29 * a], [x_cur, y_cur + 0.58 * a]]
+    c = 25
 
+    hills = [[x_cur - a / 2, y_cur - 0.29 * a], [x_cur + a / 2, y_cur - 0.29 * a], [x_cur, y_cur + 0.58 * a]]
     for i in range(len(hills)):
         way.append(hills[i])
+    while a > e:
+        print(hills)
+        Fmax = simp_max(hills)
+        last_hills = [[]]
+        #new_hill = [hills[0][0] + hills[1][0] - hills[2][0], hills[0][1] + hills[1][1] - hills[2][1]]
+        for i in range(len(hills)):
+            if hills[i] == Fmax:
+                last_hills = hills.copy()
+                hills.remove(hills[i])
+                hills.append([hills[0][0] + hills[1][0] - Fmax[0], hills[0][1] + hills[1][1] - Fmax[1]])
+                way.append(hills[-1])
+                x_cur = hills[-1][0]
+                y_cur = hills[-1][1]
+        if (last_hills[0] == hills[0]) & (last_hills[1] == hills[1]):
+            a /= 2
+            hills = [[x_cur - a / 2, y_cur - 0.29 * a], [x_cur + a / 2, y_cur - 0.29 * a], [x_cur, y_cur + 0.58 * a]]
+        c-=1
 
-    simp_min(hills)
-
-    return 0
+    to_plot(way, 'y', axes, -15, 16)
 
 
 def Hooke_Jeeves(start, step_x, step_y, e, axes):
@@ -130,7 +145,7 @@ def Hooke_Jeeves(start, step_x, step_y, e, axes):
 
         step_x /= 2
         step_y /= 2
-    to_plot(way, 'y', axes, -15, 18)
+    to_plot(way, 'r', axes, -15, 18)
 
 
 def Gauss_Zeudel(start, step_x, step_y, e, axes):
@@ -200,5 +215,5 @@ if __name__ == "__main__":
     draw_func()
     Gauss_Zeudel(start, step_x, step_y, e, axes)
     Hooke_Jeeves(start, step_x, step_y, e, axes)
-    simplex_method(start, step_x, step_y, e, axes)
+    simplex_method(start, a, e, axes)
     plt.show()
