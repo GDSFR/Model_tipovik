@@ -71,19 +71,21 @@ def simplex_method(start, a, e, axes):
     y_cur = start[1]
     way = [[x_cur, y_cur, input_F(x_cur, y_cur)]]
     global F_step
-    c = 25
-
+    last_hills2 = [[[0], [0], [0]], [[0], [0], [0]]]
+    global c
     hills = hills_calc(x_cur, y_cur, a)
     for i in range(len(hills)):
+        hills[i].append(round(input_F(hills[i][0], hills[i][1]), 4))
         way.append(hills[i])
     while a > e:
         print(hills)
         Fmax = simp_max(hills)
-        last_hills = [[]]
+
         # new_hill = [hills[0][0] + hills[1][0] - hills[2][0], hills[0][1] + hills[1][1] - hills[2][1]]
         for i in range(len(hills)):
             if hills[i] == Fmax:
-                last_hills = hills.copy()
+                last_hills2.append(hills.copy())
+                last_hills2.remove(last_hills2[0])
                 hills.remove(hills[i])
                 hills.append(
                     [round(hills[0][0] + hills[1][0] - Fmax[0], 4), round(hills[0][1] + hills[1][1] - Fmax[1], 1)])
@@ -91,10 +93,11 @@ def simplex_method(start, a, e, axes):
                 way[-1].append(round(input_F(way[-1][0], way[-1][1]), 4))
                 x_cur = hills[-1][0]
                 y_cur = hills[-1][1]
-        if (last_hills[0] == hills[0]) & (last_hills[1] == hills[1]):
+                break
+        if ((last_hills2[0][2] == hills[2])
+                or (last_hills2[1][2] == hills[2])):
             a /= 2
             hills = hills_calc(x_cur, y_cur, a)
-        c -= 1
     print(way)
     to_plot(way, 'y', axes, -15, 16)
 
@@ -224,7 +227,7 @@ if __name__ == "__main__":
 
     draw_axes(axes)
     draw_func()
-    # Gauss_Zeudel(start, step_x, step_y, e, axes)
-    # Hooke_Jeeves(start, step_x, step_y, e, axes)
+    Gauss_Zeudel(start, step_x, step_y, e, axes)
+    Hooke_Jeeves(start, step_x, step_y, e, axes)
     simplex_method(start, a, e, axes)
     plt.show()
