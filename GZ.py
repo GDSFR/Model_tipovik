@@ -151,7 +151,7 @@ def Hooke_Jeeves(start, step_x, step_y, e, axes):
 def Gauss_Zeudel(start, step_x, step_y, e, axes):
     x_cur = start[0]
     y_cur = start[1]
-    way = [[x_cur, y_cur]]
+    way = [[x_cur, y_cur, input_F(x_cur, y_cur)]]
     global F_min
     global F_step
     F_min = input_F(x_cur, y_cur)
@@ -160,7 +160,7 @@ def Gauss_Zeudel(start, step_x, step_y, e, axes):
         x_cur -= step_x
         F_step = input_F(x_cur, y_cur)
         if F_min > F_step:
-            way.append([x_cur, y_cur])
+            way.append([x_cur, y_cur, input_F(x_cur, y_cur)])
             F_min = F_step
             continue
         else:
@@ -169,7 +169,7 @@ def Gauss_Zeudel(start, step_x, step_y, e, axes):
         y_cur -= step_y
         F_step = input_F(x_cur, y_cur)
         if F_min > F_step:
-            way.append([x_cur, y_cur])
+            way.append([x_cur, y_cur, input_F(x_cur, y_cur)])
             F_min = F_step
             continue
         else:
@@ -178,7 +178,7 @@ def Gauss_Zeudel(start, step_x, step_y, e, axes):
         x_cur += step_x
         F_step = input_F(x_cur, y_cur)
         if F_min > F_step:
-            way.append([x_cur, y_cur])
+            way.append([x_cur, y_cur, input_F(x_cur, y_cur)])
             F_min = F_step
             continue
         else:
@@ -187,7 +187,7 @@ def Gauss_Zeudel(start, step_x, step_y, e, axes):
         y_cur += step_y
         F_step = input_F(x_cur, y_cur)
         if F_min > F_step:
-            way.append([x_cur, y_cur])
+            way.append([x_cur, y_cur, input_F(x_cur, y_cur)])
             F_min = F_step
             continue
         else:
@@ -195,6 +195,7 @@ def Gauss_Zeudel(start, step_x, step_y, e, axes):
 
         step_x /= 2
         step_y /= 2
+    print(way)
     to_plot(way, 'b', axes, -15, 20)
 
 
@@ -214,6 +215,6 @@ if __name__ == "__main__":
     draw_axes(axes)
     draw_func()
     Gauss_Zeudel(start, step_x, step_y, e, axes)
-    Hooke_Jeeves(start, step_x, step_y, e, axes)
-    simplex_method(start, a, e, axes)
+    #Hooke_Jeeves(start, step_x, step_y, e, axes)
+    #simplex_method(start, a, e, axes)
     plt.show()
