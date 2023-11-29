@@ -14,14 +14,14 @@ if __name__ == "__main__":
     axes.set_aspect("equal")
 
     e = 0.2
-    a = 2.7
-    start = [10, 8]
+    a = 2
+    start = [10,8]
     step_x = 2
     step_y = 2
 
     draw_axes(axes)
     draw_func()
-    Gauss_Zeudel(start, step_x, step_y, e, axes)
-    Hooke_Jeeves(start, step_x, step_y, e, axes)
-    # simplex_method(start, a, e, axes)
+    #Gauss_Zeudel(start, step_x, step_y, e, axes)
+    #Hooke_Jeeves(start, step_x, step_y, e, axes)
+    simplex_method(start, a, e, axes)
     plt.show()
