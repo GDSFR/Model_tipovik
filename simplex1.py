@@ -2,30 +2,22 @@ from plots_and_func import *
 
 
 def simp_max(hills):
-    Fmax_val = input_F(hills[0][0], hills[0][1])
+    Fmax = hills[0]
+    Fmax_val = Fmax[2]
     global Fstep
     for i in hills:
         Fstep = input_F(i[0], i[1])
         if Fstep > Fmax_val:
             Fmax = i
-            return Fmax
-    return hills[0]
+    return Fmax
 
-
-def simp_min(hills):
-    Fmax_val = input_F(hills[0][0], hills[0][1])
-    global Fstep
-    for i in hills:
-        Fstep = input_F(i[0], i[1])
-        if Fstep > Fmax_val:
-            Fmax = i
-            return Fmax
-    return hills[0]
 
 
 def hills_calc(x, y, a):
-    return [[round(x - a / 2, 4), round(y - 0.29 * a, 4)], [round(x + a / 2, 4), round(y - 0.29 * a, 4)],
-            [round(x, 4), round(y + 0.58 * a, 4)]]
+    return [[round(x - a / 2, 4), round(y - 0.29 * a, 4), round(input_F(round(x - a / 2, 4), round(y - 0.29 * a, 4)), 4)],
+            [round(x + a / 2, 4), round(y - 0.29 * a, 4), round(input_F(round(x + a / 2, 4), round(y - 0.29 * a, 4)), 4)],
+            [round(x, 4), round(y + 0.58 * a, 4), round(input_F(round(x, 4), round(y + 0.58 * a, 4)), 4)]
+            ]
 
 
 # def check_reduction(hills):
@@ -41,7 +33,6 @@ def simplex_method(start, a, e, axes):
     c = 0
     hills = hills_calc(x_cur, y_cur, a)
     for i in range(len(hills)):
-        hills[i].append(round(input_F(hills[i][0], hills[i][1]), 4))
         way.append(hills[i])
     while a > e:
         print(hills)

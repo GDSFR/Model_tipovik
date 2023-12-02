@@ -7,7 +7,7 @@
       <excludeFolder url="file://$MODULE_DIR$/venv_02" />
       <excludeFolder url="file://$MODULE_DIR$/venv_03" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.10 (Model_tipovik)" jdkType="Python SDK" />
+    <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>
