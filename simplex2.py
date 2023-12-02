@@ -143,4 +143,4 @@ def simplex_method_Nelder_Mead(start, a, e, axes):
         c += 1
 
     print(way)
-    to_plot(way, 'purple', axes, -15, 16)
+    to_plot(way, 'purple', axes, -15, 14)

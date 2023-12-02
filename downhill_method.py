@@ -56,4 +56,4 @@ def downhill_method(start, axes, a, e):
         way.append(enter_point)
 
     print(way)
-    to_plot(way, 'orange', axes, -15, 16)
+    to_plot(way, 'orange', axes, -15, 12)
