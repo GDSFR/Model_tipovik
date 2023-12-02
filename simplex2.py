@@ -1,3 +1,5 @@
+import numpy as np
+
 from plots_and_func import *
 
 
@@ -76,8 +78,8 @@ def check_red(hills):
 
 
 def check_sqrt(hills, e):
-    if round(1, 4) < e:
-        return True
+    if round(np.sqrt(hills[1][0]**2 - hills[0][0]**2), 4) < e:
+        return False
     return True
 
 
@@ -95,7 +97,7 @@ def simplex_method_Nelder_Mead(start, a, e, axes):
     hills = hills_calc(x_cur, y_cur, a)
     for i in range(len(hills)):
         way.append(hills[i])
-    while c < 30:
+    while check_sqrt(hills, e):
         print(f"Step:\n{hills}")
         Fmax = simp_max(hills)
         c += 1
@@ -107,13 +109,13 @@ def simplex_method_Nelder_Mead(start, a, e, axes):
                 hills.remove(i)
                 hills.append(calc_hill_1(hills, Fmax))
                 break
-        print(f"- max, + better hill :\n{hills}")
+#        print(f"- max, + better hill :\n{hills}")
 
         Fmin = simp_min(hills)
         for i in hills:
             if i == Fmin:
                 hill_min = calc_hill_2(hills, Fmin, a)
-                print(f"hill_min: \n{hill_min}")
+#                print(f"hill_min: \n{hill_min}")
                 if hill_min[2] < hills[2][2]:
                     hills.remove(hills[2])
                     hills.append(hill_min)
@@ -125,7 +127,7 @@ def simplex_method_Nelder_Mead(start, a, e, axes):
                 # hills.append(Fmin)
                 red_c += 1
                 hill_min_red = calc_hill_2red(hills, hills[2], a, red_c)
-                print(f"hill_red: \n{hill_min_red}")
+#                print(f"hill_red: \n{hill_min_red}")
                 if hill_min_red[2] < hills[2][2]:
                     hills.remove(hills[2])
                     hills.append(hill_min_red)
@@ -134,7 +136,7 @@ def simplex_method_Nelder_Mead(start, a, e, axes):
         way.append(hills[-1])
         x_cur = hills[-1][0]
         y_cur = hills[-1][1]
-        print(f"- max, ++ better hill :\n{hills}")
+#        print(f"- max, ++ better hill :\n{hills}")
         for i in hills:
             if input_F(i[0], i[1]) == 0:
                 a = e
